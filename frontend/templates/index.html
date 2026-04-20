@@ -518,6 +518,11 @@
                     Publish Schedule 🚀
                 </button>
             </div>
+            <div style="margin-top: 10px;">
+                <button type="button" class="btn-generate" style="width: 100%; margin: 0; background: linear-gradient(135deg, #ec4899, #be185d);" onclick="showAddSubjectModal()">
+                    Add Subject 📚
+                </button>
+            </div>
         </form>
 
         <div class="chart-container">
@@ -581,6 +586,36 @@
     <div class="popup-row"><span class="popup-label">Room:</span> <span class="popup-value" id="p_room"></span></div>
     <div class="popup-row"><span class="popup-label">Section:</span> <span class="popup-value" id="p_section"></span></div>
     <button class="btn-close" onclick="closePopup()">Close Details</button>
+</div>
+
+<!-- 🔥 ADD SUBJECT POPUP -->
+<div id="add-subject-popup" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%, -40%); background:#1e293b; padding:30px; border-radius:20px; z-index:1000; min-width:350px; box-shadow:0 25px 50px -12px rgba(0,0,0,0.5); border:1px solid var(--border-color); opacity:0; transition:all 0.3s cubic-bezier(0.4, 0, 0.2, 1);">
+    <h3 class="popup-title">Add New Subject</h3>
+    <div style="display:flex; flex-direction:column; gap:15px;">
+        <div>
+            <label style="color:var(--text-muted); font-size:14px;">Course Name</label><br>
+            <input type="text" id="new_course_name" style="width:100%; padding:10px; border-radius:8px; border:1px solid rgba(255,255,255,0.1); background:rgba(0,0,0,0.2); color:white; margin-top:5px; box-sizing:border-box;" placeholder="e.g. Advanced AI" required>
+        </div>
+        <div>
+            <label style="color:var(--text-muted); font-size:14px;">Faculty Name</label><br>
+            <input type="text" id="new_faculty" style="width:100%; padding:10px; border-radius:8px; border:1px solid rgba(255,255,255,0.1); background:rgba(0,0,0,0.2); color:white; margin-top:5px; box-sizing:border-box;" placeholder="e.g. Dr. Smith" required>
+        </div>
+        <div>
+            <label style="color:var(--text-muted); font-size:14px;">Hours per week</label><br>
+            <input type="number" id="new_hours" style="width:100%; padding:10px; border-radius:8px; border:1px solid rgba(255,255,255,0.1); background:rgba(0,0,0,0.2); color:white; margin-top:5px; box-sizing:border-box;" placeholder="e.g. 2" required min="1">
+        </div>
+        <div>
+            <label style="color:var(--text-muted); font-size:14px;">Course Type</label><br>
+            <select id="new_type" style="width:100%; padding:10px; border-radius:8px; border:1px solid rgba(255,255,255,0.1); background:rgba(0,0,0,0.2); color:white; margin-top:5px; box-sizing:border-box;">
+                <option value="core">Core</option>
+                <option value="elective">Elective</option>
+            </select>
+        </div>
+    </div>
+    <div style="display:flex; gap:10px; margin-top:20px;">
+        <button class="btn-generate" style="flex:1; background:linear-gradient(135deg, #10b981, #059669);" onclick="submitNewSubject()">Save</button>
+        <button class="btn-close" style="flex:1; margin-top:0;" onclick="closeAddSubjectModal()">Cancel</button>
+    </div>
 </div>
 
 <!-- 🔥 CHAT WIDGET -->
@@ -935,6 +970,82 @@ function appendChat(role, text) {
     div.innerText = text;
     messages.appendChild(div);
     messages.scrollTop = messages.scrollHeight;
+}
+
+// --- ADD SUBJECT MODAL ---
+function showAddSubjectModal() {
+    const popup = document.getElementById("add-subject-popup");
+    const overlay = document.getElementById("overlay");
+    popup.style.display = "block";
+    overlay.style.display = "block";
+    
+    // Trigger reflow
+    void popup.offsetWidth;
+    
+    popup.style.transform = "translate(-50%, -50%)";
+    popup.style.opacity = "1";
+    overlay.classList.add("active");
+    
+    // Set overlay to close this modal when clicked
+    overlay.onclick = function() {
+        closeAddSubjectModal();
+        closePopup(); // Also fallback to original
+    };
+}
+
+function closeAddSubjectModal() {
+    const popup = document.getElementById("add-subject-popup");
+    const overlay = document.getElementById("overlay");
+    popup.style.transform = "translate(-50%, -40%)";
+    popup.style.opacity = "0";
+    overlay.classList.remove("active");
+    setTimeout(() => {
+        popup.style.display = "none";
+        overlay.style.display = "none";
+    }, 300);
+    
+    // Restore overlay onclick
+    overlay.onclick = closePopup;
+}
+
+function submitNewSubject() {
+    const course_name = document.getElementById('new_course_name').value.trim();
+    const faculty = document.getElementById('new_faculty').value.trim();
+    const hours = document.getElementById('new_hours').value.trim();
+    const type = document.getElementById('new_type').value;
+
+    if (!course_name || !faculty || !hours) {
+        alert("Please fill in all fields.");
+        return;
+    }
+
+    fetch('/add_subject', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            course_name: course_name,
+            faculty: faculty,
+            hours: hours,
+            type: type
+        })
+    })
+    .then(res => res.json())
+    .then(data => {
+        if(data.success) {
+            alert(data.message);
+            closeAddSubjectModal();
+            // Clear inputs
+            document.getElementById('new_course_name').value = '';
+            document.getElementById('new_faculty').value = '';
+            document.getElementById('new_hours').value = '';
+        } else {
+            alert("Error: " + data.message);
+        }
+    })
+    .catch(err => {
+        console.error("Error:", err);
+        alert("An error occurred while saving the subject.");
+    });
 }
 </script>
 

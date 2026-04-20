@@ -339,6 +339,49 @@ def chat():
 
     return {"message": response_msg, "weights": weights}
 
+@app.route('/add_subject', methods=['POST'])
+def add_subject():
+    if "user" not in session:
+        return "Unauthorized", 401
+    
+    data = request.json
+    course_name = data.get("course_name")
+    faculty = data.get("faculty")
+    hours = data.get("hours")
+    course_type = data.get("type", "core")
+
+    if not all([course_name, faculty, hours]):
+        return {"success": False, "message": "Missing required fields"}, 400
+
+    if course_list:
+        try:
+            max_id = max(int(c.get("course_id", 0)) for c in course_list)
+            new_id = max_id + 1
+        except:
+            new_id = len(course_list) + 1
+    else:
+        new_id = 1
+
+    new_course = {
+        "course_id": new_id,
+        "course_name": course_name,
+        "faculty": faculty,
+        "hours": int(hours),
+        "type": course_type
+    }
+
+    course_list.append(new_course)
+
+    csv_path = os.path.join(base_dir, "../data/courses.csv")
+    try:
+        new_df = pd.DataFrame([new_course])
+        new_df.to_csv(csv_path, mode='a', header=False, index=False)
+        return {"success": True, "message": "Subject added successfully!"}
+    except Exception as e:
+        print("Error saving subject:", e)
+        return {"success": False, "message": "Failed to save subject."}, 500
+
+
 @app.route("/")
 def home():
     if "user" not in session:
