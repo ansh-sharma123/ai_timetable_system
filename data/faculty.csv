@@ -4,6 +4,7 @@ faculty_id,name,available_slots
 3,Dr Verma,"Mon3,Wed2,Fri1"
 4,Dr Gupta,"Tue2,Thu2,Fri3"
 5,Dr Mehta,"Mon1,Wed3,Thu4"
-6,Dr Khan,"Tue3,Wed1,Fri2"
+6,Dr Khan,"Tue3,Wed1,Fri2,Thu5,Mon4"
 7,Dr Patel,"Mon2,Thu1,Fri3"
 8,Dr Roy,"Wed2,Thu2,Fri1"
+9,Dr. Sharma,"Mon3,Tue4,Wed5,Thu4,Fri6"

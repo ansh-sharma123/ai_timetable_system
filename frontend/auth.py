@@ -52,7 +52,7 @@ def logout():
 
 # -------- FORGOT PASSWORD FLOW --------
 
-# ⚠️ UPDATE THESE WITH YOUR GMAIL CREDENTIALS
+# [!] UPDATE THESE WITH YOUR GMAIL CREDENTIALS
 SENDER_EMAIL = "anshul3478@gmail.com"
 APP_PASSWORD = "alzvnyspohrbdeka"
 
@@ -83,9 +83,9 @@ def forgot_password():
                 server.login(SENDER_EMAIL, APP_PASSWORD)
                 server.send_message(msg)
                 
-            print(f"📧 Successfully sent verification email to {email}")
+            print(f"[OK] Successfully sent verification email to {email}")
         except Exception as e:
-            print(f"❌ Failed to send email: {e}")
+            print(f"[!!] Failed to send email: {e}")
             return f"Failed to send email. Please check your SMTP settings in auth.py."
 
         # Save email in session temporarily for the next step
