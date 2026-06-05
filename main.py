@@ -112,7 +112,7 @@ ELITE_COUNT = 5   # Top N survivors carried unchanged each generation
 population = [generate_random_timetable() for _ in range(POP_SIZE)]
 
 print("=" * 60)
-print("  AI Timetable System - Genetic Algorithm")
+print("  ChronoGen - Genetic Algorithm")
 print("=" * 60)
 print(f"  Courses   : {len(course_list)}")
 print(f"  Rooms     : {len(room_list)}")

@@ -1,6 +1,6 @@
 {
-  "name": "AI Timetable",
-  "short_name": "Timetable",
+  "name": "ChronoGen",
+  "short_name": "ChronoGen",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#0f172a",

@@ -1,4 +1,5 @@
 import sqlite3
+from werkzeug.security import generate_password_hash, check_password_hash
 
 def init_db():
     conn = sqlite3.connect("users.db")
@@ -21,7 +22,8 @@ def create_user(email, password):
     c = conn.cursor()
 
     try:
-        c.execute("INSERT INTO users (email, password) VALUES (?, ?)", (email, password))
+        hashed = generate_password_hash(password)
+        c.execute("INSERT INTO users (email, password) VALUES (?, ?)", (email, hashed))
         conn.commit()
         return True
     except:
@@ -34,11 +36,14 @@ def check_user(email, password):
     conn = sqlite3.connect("users.db")
     c = conn.cursor()
 
-    c.execute("SELECT * FROM users WHERE email=? AND password=?", (email, password))
+    c.execute("SELECT * FROM users WHERE email=?", (email,))
     user = c.fetchone()
 
     conn.close()
-    return user
+    # Verify password hash
+    if user and check_password_hash(user[2], password):
+        return user
+    return None
 
 def get_user_by_email(email):
     conn = sqlite3.connect("users.db")
@@ -55,7 +60,8 @@ def update_password(email, new_password):
     c = conn.cursor()
 
     try:
-        c.execute("UPDATE users SET password=? WHERE email=?", (new_password, email))
+        hashed = generate_password_hash(new_password)
+        c.execute("UPDATE users SET password=? WHERE email=?", (hashed, email))
         conn.commit()
         return True
     except:

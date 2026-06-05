@@ -1,6 +1,8 @@
+# pyrefly: ignore [missing-import]
 from flask import Blueprint, render_template, request, redirect, session
 import random
 import smtplib
+import os
 from email.message import EmailMessage
 from database import create_user, check_user, get_user_by_email, update_password
 
@@ -52,9 +54,10 @@ def logout():
 
 # -------- FORGOT PASSWORD FLOW --------
 
-# [!] UPDATE THESE WITH YOUR GMAIL CREDENTIALS
-SENDER_EMAIL = "anshul3478@gmail.com"
-APP_PASSWORD = "alzvnyspohrbdeka"
+# Load credentials from environment variables (recommended for production)
+# Set SENDER_EMAIL and APP_PASSWORD as environment variables, or they fall back to defaults
+SENDER_EMAIL = os.environ.get("SENDER_EMAIL", "anshul3478@gmail.com")
+APP_PASSWORD  = os.environ.get("APP_PASSWORD",  "alzvnyspohrbdeka")
 
 # Temporary storage for reset codes (in production, use a database or Redis with expiration)
 reset_codes = {}
@@ -73,7 +76,7 @@ def forgot_password():
         # SENDING REAL EMAIL
         try:
             msg = EmailMessage()
-            msg.set_content(f"Your AI Timetable verification code is: {code}\n\nPlease enter this code to reset your password.")
+            msg.set_content(f"Your ChronoGen verification code is: {code}\n\nPlease enter this code to reset your password.")
             msg["Subject"] = "Password Reset Verification Code"
             msg["From"] = SENDER_EMAIL
             msg["To"] = email

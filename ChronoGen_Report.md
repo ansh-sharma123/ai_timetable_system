@@ -1,4 +1,4 @@
-# AI Timetable System Project Report
+# ChronoGen Project Report
 
 ## Table of Contents
 
@@ -220,7 +220,7 @@ This report is organized as follows:
 
 ### 2.1 System Description
 
-The AI Timetable System is a comprehensive solution for automated educational timetable generation. It combines artificial intelligence techniques with modern web technologies to provide an efficient, user-friendly scheduling platform.
+The ChronoGen is a comprehensive solution for automated educational timetable generation. It combines artificial intelligence techniques with modern web technologies to provide an efficient, user-friendly scheduling platform.
 
 The system takes input data about courses, faculty availability, and room resources, then applies genetic algorithms to generate optimized timetables that minimize conflicts and maximize resource utilization.
 
@@ -1218,7 +1218,7 @@ app.config['DEBUG'] = False
 
 ## 18. Conclusion
 
-The AI Timetable System represents a successful implementation of genetic algorithms for solving complex educational scheduling problems. The system demonstrates how artificial intelligence can automate traditionally manual processes, resulting in more efficient and optimal solutions.
+The ChronoGen represents a successful implementation of genetic algorithms for solving complex educational scheduling problems. The system demonstrates how artificial intelligence can automate traditionally manual processes, resulting in more efficient and optimal solutions.
 
 Key achievements include:
 - Automated timetable generation
@@ -1382,4 +1382,4 @@ room_id,room_name,capacity
 
 ---
 
-*This comprehensive report covers all aspects of the AI Timetable System project. The Markdown format can be easily converted to Microsoft Word by copying the content into Word or using online conversion tools. The report exceeds 22 pages when formatted in standard document layout.*
+*This comprehensive report covers all aspects of the ChronoGen project. The Markdown format can be easily converted to Microsoft Word by copying the content into Word or using online conversion tools. The report exceeds 22 pages when formatted in standard document layout.*
