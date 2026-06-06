@@ -1,0 +1,55 @@
+version: "3.9"
+
+services:
+  # ─── ChronoGen Web App ──────────────────────────────────────────────────────
+  chronogen:
+    build: .
+    container_name: chronogen_app
+    restart: unless-stopped
+    ports:
+      - "5000:5000"
+    environment:
+      - SECRET_KEY=${SECRET_KEY:-change-me-in-production}
+      - SENDER_EMAIL=${SENDER_EMAIL:-your@gmail.com}
+      - APP_PASSWORD=${APP_PASSWORD:-your-app-password}
+      - FLASK_ENV=production
+    volumes:
+      - ./data:/app/data          # Persist CSV data
+      - ./frontend/users.db:/app/frontend/users.db  # Persist SQLite DB
+    depends_on:
+      - redis
+    networks:
+      - chronogen_net
+
+  # ─── Redis (for future Celery task queue) ──────────────────────────────────
+  redis:
+    image: redis:7-alpine
+    container_name: chronogen_redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - chronogen_net
+
+  # ─── Nginx Reverse Proxy ───────────────────────────────────────────────────
+  nginx:
+    image: nginx:alpine
+    container_name: chronogen_nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - chronogen
+    networks:
+      - chronogen_net
+
+volumes:
+  redis_data:
+
+networks:
+  chronogen_net:
+    driver: bridge

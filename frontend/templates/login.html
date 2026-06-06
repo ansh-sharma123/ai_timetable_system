@@ -28,6 +28,9 @@
 <div class="bg-animation"><span></span><span></span><span></span><span></span><span></span></div>
 <div class="card">
     <h2>Welcome Back</h2>
+    {% if error %}
+    <p style="color:#f87171; background:rgba(248,113,113,0.1); border:1px solid rgba(248,113,113,0.2); padding:10px; border-radius:8px; margin-bottom:15px; font-size:14px; text-align:center;">{{ error }}</p>
+    {% endif %}
     <form method="post">
         <input type="email" name="email" placeholder="Email address" required>
         <input type="password" name="password" placeholder="Password" required>

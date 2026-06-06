@@ -1,0 +1,26 @@
+# Git & Docker files
+.git
+.gitignore
+.dockerignore
+docker-compose.yml
+Dockerfile
+
+# Environment variables
+.env
+.env.*
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Local databases & logs
+*.db
+*.log
+
+# Documentation & Proposals
+*.md
